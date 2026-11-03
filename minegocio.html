@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yaku | Mi Negocio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        body { background: #F8F9FE; }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .btn-back { width: 36px; height: 36px; color: var(--primary); display: flex; justify-content: center; align-items: center; text-decoration: none; font-size: 20px; font-weight: 900;}
+        .header h1 { font-size: 18px; font-weight: 900; color: var(--text-dark); margin: 0; }
+
+        /* Tarjeta Principal (Hero) */
+        .hero-card { background: white; border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .hero-icon { width: 50px; height: 50px; background: #F0EDFF; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 24px; color: #5B4DC8; }
+        .hero-info h2 { margin: 0 0 4px 0; font-size: 16px; font-weight: 900; color: var(--text-dark); }
+        .hero-info p { margin: 0; font-size: 12px; font-weight: 700; color: var(--text-muted); }
+
+        /* Secciones de Configuración */
+        .config-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-header h3 { margin: 0; font-size: 14px; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .card-header h3 i { color: #5B4DC8; }
+        .btn-edit { background: transparent; border: none; color: #5B4DC8; font-size: 12px; font-weight: 800; cursor: pointer; }
+
+        /* Listas de datos */
+        .data-list { list-style: none; padding: 0; margin: 0; }
+        .data-list li { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #F3F4F6; }
+        .data-list li:last-child { border-bottom: none; padding-bottom: 0; }
+        .data-label { font-size: 12px; font-weight: 700; color: var(--text-muted); flex: 1; }
+        .data-value { font-size: 12px; font-weight: 800; color: var(--text-dark); text-align: right; max-width: 60%; }
+        .data-value.clickable { color: #5B4DC8; cursor: pointer; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+
+        /* Badge y Toggle */
+        .badge-currency { background: #F0EDFF; color: #5B4DC8; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 800; }
+        
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #E5E7EB; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #5B4DC8; }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Listas de Ajustes (con flecha) */
+        .settings-list { list-style: none; padding: 0; margin: 0; }
+        .settings-list li { padding: 14px 0; border-bottom: 1px solid #F3F4F6; }
+        .settings-list li:last-child { border-bottom: none; padding-bottom: 0; }
+        .s-link { display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); cursor: pointer; }
+        .s-info h4 { margin: 0 0 2px 0; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .s-info h4 i { color: #9CA3AF; font-size: 14px; width: 16px; text-align: center; }
+        .s-info p { margin: 0 0 0 24px; font-size: 10px; font-weight: 700; color: var(--text-muted); }
+        .s-arrow { color: #D1D5DB; font-size: 12px; }
+
+        /* Banner Ayuda */
+        .help-banner { background: #F0EDFF; border-radius: 16px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; text-decoration: none; color: var(--text-dark); }
+        .help-banner h4 { margin: 0; font-size: 13px; font-weight: 900; display: flex; align-items: center; gap: 8px; color: #5B4DC8;}
+        
+        .btn-logout { width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; color: #EF4444; font-size: 14px; font-weight: 800; padding: 15px; background: transparent; border: none; cursor: pointer; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="view-container">
+        
+        <div class="header">
+            <a href="index.html" class="btn-back"><i class="fas fa-chevron-left"></i></a>
+            <h1>Mi negocio</h1>
+            <div style="width: 36px;"></div>
+        </div>
+
+        <!-- Tarjeta Hero -->
+        <div class="hero-card">
+            <div class="hero-icon"><i class="fas fa-store"></i></div>
+            <div class="hero-info">
+                <h2 id="hero-nombre">Bodega La Esquina</h2>
+                <p>Tu emprendimiento, nuestro apoyo 💜</p>
+            </div>
+        </div>
+
+        <!-- Datos generales del negocio -->
+        <div class="config-card">
+            <div class="card-header">
+                <h3><i class="fas fa-store-alt"></i> Datos generales del negocio</h3>
+                <button class="btn-edit" onclick="editarDatosNegocio()">Editar</button>
+            </div>
+            <ul class="data-list">
+                <li>
+                    <span class="data-label">Nombre comercial</span>
+                    <span class="data-value" id="val-nombre">Bodega La Esquina</span>
+                </li>
+                <li>
+                    <span class="data-label">RUC / RUS</span>
+                    <span class="data-value" id="val-ruc">10458923412</span>
+                </li>
+                <li>
+                    <span class="data-label">Rubro / Tipo</span>
+                    <span class="data-value" id="val-rubro">Bodega / Abarrotes</span>
+                </li>
+                <li>
+                    <span class="data-label">Dirección</span>
+                    <span class="data-value" id="val-direccion">Jr. Los Pinos 142, Lima</span>
+                </li>
+                <li>
+                    <span class="data-label">Horario de atención</span>
+                    <span class="data-value" id="val-horario">Lun - Sáb: 7am - 10pm</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Preferencias y finanzas -->
+        <div class="config-card">
+            <div class="card-header">
+                <h3><i class="fas fa-wallet"></i> Preferencias y finanzas</h3>
+            </div>
+            <ul class="data-list">
+                <li>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--text-dark);">Moneda predeterminada</div>
+                        <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); margin-top: 2px;">Para todos tus registros diarios</div>
+                    </div>
+                    <span class="badge-currency">Soles (S/)</span>
+                </li>
+                <li>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--text-dark);">Meta mensual de ventas</div>
+                        <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); margin-top: 2px;">Objetivo para métricas</div>
+                    </div>
+                    <span class="data-value clickable" onclick="editarMetaConfig()"><span id="val-meta">S/ 8,500.00</span> <i class="fas fa-pencil-alt" style="font-size: 10px;"></i></span>
+                </li>
+                <li>
+                    <div>
+                        <div style="font-size: 12px; font-weight: 800; color: var(--text-dark);">Alertas de stock y gastos</div>
+                        <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); margin-top: 2px;">Avisos proactivos de Yaku</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-alertas" checked onchange="guardarPreferencias()">
+                        <span class="slider"></span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Seguridad y cuenta -->
+        <div class="config-card">
+            <div class="card-header">
+                <h3><i class="fas fa-shield-alt"></i> Seguridad y cuenta</h3>
+            </div>
+            <ul class="settings-list">
+                <li>
+                    <a href="#" class="s-link">
+                        <div class="s-info">
+                            <h4><i class="far fa-bell"></i> Notificaciones del asistente</h4>
+                        </div>
+                        <i class="fas fa-chevron-right s-arrow"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="s-link" onclick="exportarCSV(event)">
+                        <div class="s-info">
+                            <h4><i class="fas fa-cloud-upload-alt"></i> Copia de seguridad</h4>
+                            <p id="lbl-sync" style="color: #10B981;">Sincronizado hoy</p>
+                        </div>
+                        <i class="fas fa-chevron-right s-arrow"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="s-link" onclick="borrarDatos(event)">
+                        <div class="s-info">
+                            <h4><i class="fas fa-history"></i> Borrar datos y reiniciar cuenta</h4>
+                        </div>
+                        <i class="fas fa-chevron-right s-arrow"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <a href="#" class="help-banner">
+            <h4><i class="fas fa-headset"></i> Ayuda y Soporte de Yaku</h4>
+            <i class="fas fa-chevron-right s-arrow" style="color: #5B4DC8;"></i>
+        </a>
+
+        <button class="btn-logout" onclick="cerrarSesion()">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </button>
+
+    </div>
+
+    <!-- Menú Inferior -->
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i><span>Inicio</span></a>
+        <a href="misfinanzas.html" class="nav-btn"><i class="fas fa-chart-bar"></i><span>Reportes</span></a>
+        <!-- Enlace actualizado a minegocio.html -->
+        <a href="minegocio.html" class="nav-btn active"><i class="fas fa-store"></i><span>Mi negocio</span></a>
+    </div>
+</div>
+
+<script>
+    // Datos por defecto
+    const defaultData = {
+        nombre: "Bodega La Esquina",
+        ruc: "10458923412",
+        rubro: "Bodega / Abarrotes",
+        direccion: "Jr. Los Pinos 142, Lima",
+        horario: "Lun - Sáb: 7am - 10pm",
+        alertas: true
+    };
+
+    function cargarDatos() {
+        const data = JSON.parse(localStorage.getItem('yaku_negocio')) || defaultData;
+        
+        document.getElementById('hero-nombre').innerText = data.nombre;
+        document.getElementById('val-nombre').innerText = data.nombre;
+        document.getElementById('val-ruc').innerText = data.ruc;
+        document.getElementById('val-rubro').innerText = data.rubro;
+        document.getElementById('val-direccion').innerText = data.direccion;
+        document.getElementById('val-horario').innerText = data.horario;
+        document.getElementById('toggle-alertas').checked = data.alertas;
+
+        const meta = parseFloat(localStorage.getItem('yaku_meta')) || 8500;
+        document.getElementById('val-meta').innerText = `S/ ${meta.toLocaleString('es-PE', {minimumFractionDigits: 2})}`;
+
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('lbl-sync').innerText = `Sincronizado hoy ${timeString}`;
+    }
+
+    function editarDatosNegocio() {
+        const data = JSON.parse(localStorage.getItem('yaku_negocio')) || defaultData;
+        
+        const nuevoNombre = prompt("Nombre comercial:", data.nombre) || data.nombre;
+        const nuevoRuc = prompt("RUC / RUS:", data.ruc) || data.ruc;
+        const nuevoRubro = prompt("Rubro / Tipo:", data.rubro) || data.rubro;
+        const nuevaDir = prompt("Dirección:", data.direccion) || data.direccion;
+        const nuevoHorario = prompt("Horario de atención:", data.horario) || data.horario;
+
+        const newData = {
+            nombre: nuevoNombre, ruc: nuevoRuc, rubro: nuevoRubro,
+            direccion: nuevaDir, horario: nuevoHorario,
+            alertas: document.getElementById('toggle-alertas').checked
+        };
+
+        localStorage.setItem('yaku_negocio', JSON.stringify(newData));
+        cargarDatos();
+    }
+
+    function editarMetaConfig() {
+        const metaActual = parseFloat(localStorage.getItem('yaku_meta')) || 8500;
+        const nuevaMetaStr = prompt("Ingresa tu nueva meta de ventas mensual en soles:", metaActual);
+        
+        if (nuevaMetaStr !== null) {
+            const nuevaMeta = parseFloat(nuevaMetaStr.replace(/[^0-9.-]+/g,""));
+            if (!isNaN(nuevaMeta) && nuevaMeta > 0) {
+                localStorage.setItem('yaku_meta', nuevaMeta);
+                cargarDatos();
+            } else {
+                alert("Por favor, ingresa un monto válido mayor a cero.");
+            }
+        }
+    }
+
+    function guardarPreferencias() {
+        const data = JSON.parse(localStorage.getItem('yaku_negocio')) || defaultData;
+        data.alertas = document.getElementById('toggle-alertas').checked;
+        localStorage.setItem('yaku_negocio', JSON.stringify(data));
+    }
+
+    function exportarCSV(e) {
+        e.preventDefault();
+        const transacciones = JSON.parse(localStorage.getItem('yaku_data')) || [];
+        if (transacciones.length === 0) {
+            alert('No hay datos financieros para respaldar.');
+            return;
+        }
+
+        let csvContent = "data:text/csv;charset=utf-8,Fecha,Tipo,Categoría,Detalle,Método,Monto\n";
+        transacciones.forEach(t => {
+            const fecha = new Date(t.fecha).toLocaleDateString();
+            csvContent += `${fecha},${t.tipo},"${t.categoria}","${t.detalle}",${t.metodo},${t.monto}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "yaku_respaldo_seguridad.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        cargarDatos(); 
+        alert('Copia de seguridad descargada exitosamente en formato Excel (CSV).');
+    }
+
+    function borrarDatos(e) {
+        e.preventDefault();
+        if(confirm("¿Estás seguro de eliminar todo el historial y reiniciar tu cuenta? Esta acción no se puede deshacer.")) {
+            localStorage.removeItem('yaku_data');
+            alert('Datos eliminados correctamente.');
+            window.location.reload();
+        }
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('yaku_token');
+        window.location.href = 'login.html';
+    }
+
+    document.addEventListener("DOMContentLoaded", cargarDatos);
+</script>
+</body>
+</html>

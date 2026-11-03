@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yaku | Bienvenida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Nunito', sans-serif;
+            background-color: #F4F9FF;
+            overflow: hidden;
+        }
+
+        /* Contenedor fluido para abarcar cualquier pantalla */
+        .splash-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(180deg, #D4E8FC 0%, #F4F9FF 50%, #FFFFFF 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Nubes flotantes */
+        .cloud { position: absolute; background: white; border-radius: 50px; z-index: 1; }
+        .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
+        
+        .cloud-1 { top: 10%; left: 5%; width: 100px; height: 35px; opacity: 0.8; }
+        .cloud-1::before { width: 50px; height: 50px; top: -20px; left: 15px; }
+        .cloud-1::after { width: 40px; height: 40px; top: -10px; left: 55px; }
+
+        .cloud-2 { top: 15%; right: 5%; width: 120px; height: 40px; opacity: 0.9; }
+        .cloud-2::before { width: 60px; height: 60px; top: -25px; left: 20px; }
+
+        /* Sección del Logo */
+        .logo-section {
+            margin-top: 18vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo-graphics {
+            position: relative;
+            width: 120px;
+            height: 90px;
+            margin-bottom: -15px;
+        }
+        
+        .bamboo { position: absolute; font-size: 65px; left: 0; bottom: 0; transform: rotate(-10deg); text-shadow: 2px 2px 5px rgba(0,0,0,0.1); transition: 0.3s; }
+        .water-drop { position: absolute; font-size: 55px; right: 0; bottom: 10px; filter: drop-shadow(2px 4px 6px rgba(59, 130, 246, 0.3)); transition: 0.3s; }
+
+        .logo-text {
+            font-size: 56px;
+            font-weight: 900;
+            color: #023E3A;
+            margin: 0;
+            letter-spacing: -2px;
+            transition: 0.3s;
+        }
+
+        .wave-line {
+            width: 120px;
+            height: 8px;
+            background: #4DB8FF;
+            border-radius: 10px;
+            margin-top: 5px;
+            position: relative;
+            transition: 0.3s;
+        }
+        
+        .slogan {
+            margin-top: 20px;
+            font-size: 15px;
+            font-weight: 800;
+            color: #1E293B;
+            word-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        /* Paisaje inferior adaptable */
+        .landscape {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40vh;
+            min-height: 300px;
+            z-index: 5;
+        }
+
+        .hill { position: absolute; border-radius: 50%; transition: 0.3s; }
+        .hill-back { width: 150vw; height: 300px; background: #96D294; bottom: -120px; left: -25vw; }
+        .hill-middle { width: 120vw; height: 250px; background: #B3E0A6; bottom: -100px; right: -10vw; }
+        .hill-front { width: 140vw; height: 200px; background: #C8ECAE; bottom: -80px; left: -20vw; }
+
+        /* Elementos del paisaje */
+        .store {
+            position: absolute;
+            bottom: 15%;
+            right: 15%;
+            width: 120px;
+            height: 100px;
+            z-index: 10;
+            transition: transform 0.3s ease, right 0.3s ease;
+        }
+        .store-base {
+            position: absolute; bottom: 0; width: 100%; height: 75px;
+            background: #FDF0D5; border-radius: 4px; border: 2px solid #E2D3B8;
+        }
+        .awning {
+            position: absolute; top: -5px; left: -5%; width: 110%; height: 35px;
+            background: repeating-linear-gradient(90deg, #F86E6E, #F86E6E 15px, #FFFFFF 15px, #FFFFFF 30px);
+            border-radius: 5px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transform: perspective(50px) rotateX(20deg);
+        }
+        .store-door { position: absolute; bottom: 0; right: 15px; width: 25px; height: 45px; background: #3B82F6; border-radius: 2px 2px 0 0; }
+        .store-window { position: absolute; bottom: 20px; left: 15px; width: 35px; height: 25px; background: #93C5FD; border: 2px solid #60A5FA; border-radius: 2px; }
+        
+        .trees { position: absolute; font-size: 40px; bottom: 20%; left: 15%; z-index: 8; transition: 0.3s; }
+        .tree-2 { position: absolute; font-size: 30px; bottom: 18%; left: 28%; z-index: 9; transition: 0.3s; }
+
+        /* Botón Comenzar - Adaptable */
+        .btn-start {
+            position: absolute;
+            bottom: 6%;
+            width: 85%;
+            max-width: 350px; /* Limita el ancho en PC */
+            background: #7B61FF;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 18px 20px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 8px 20px rgba(123, 97, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .btn-start:hover { background: #684DF0; transform: translateY(-2px); }
+        .btn-start:active { transform: scale(0.96); box-shadow: 0 4px 10px rgba(123, 97, 255, 0.2); }
+
+        /* =========================================
+           MEDIA QUERIES PARA PC Y TABLETS (Responsivo)
+           ========================================= */
+        @media (min-width: 768px) {
+            .logo-section { margin-top: 15vh; }
+            .logo-graphics { width: 160px; height: 120px; margin-bottom: -20px;}
+            .bamboo { font-size: 90px; }
+            .water-drop { font-size: 75px; }
+            .logo-text { font-size: 80px; }
+            .wave-line { width: 180px; height: 10px; }
+            .slogan { font-size: 22px; margin-top: 30px; }
+            
+            /* Hacemos la tienda y los árboles más grandes en PC */
+            .store { transform: scale(1.6); right: 25%; bottom: 25%; transform-origin: bottom center; }
+            .trees { font-size: 80px; left: 20%; bottom: 22%; }
+            .tree-2 { font-size: 60px; left: 28%; bottom: 18%; }
+            
+            /* Ajustes del botón para PC */
+            .btn-start { padding: 22px 20px; font-size: 18px; max-width: 400px; bottom: 8%; }
+            
+            /* Posición de nubes en pantallas anchas */
+            .cloud-1 { left: 15%; top: 15%; transform: scale(1.5); }
+            .cloud-2 { right: 15%; top: 10%; transform: scale(1.5); }
+        }
+
+        @media (min-width: 1200px) {
+            .store { right: 30%; transform: scale(1.8); }
+            .trees { left: 25%; font-size: 100px; }
+            .tree-2 { left: 32%; font-size: 75px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="splash-container">
+    
+    <!-- Cielo y nubes -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+
+    <!-- Logo y Eslogan -->
+    <div class="logo-section">
+        <div class="logo-graphics">
+            <span class="bamboo">🎍</span>
+            <span class="water-drop">💧</span>
+        </div>
+        <h1 class="logo-text">Yaku</h1>
+        <div class="wave-line"></div>
+        <p class="slogan">Aprende • Organiza • Crece</p>
+    </div>
+
+    <!-- Paisaje fluido y Tienda -->
+    <div class="landscape">
+        <div class="hill hill-back"></div>
+        <div class="hill hill-middle"></div>
+        <div class="trees">🌳</div>
+        <div class="tree-2">🌲</div>
+        <div class="hill hill-front"></div>
+        
+        <div class="store">
+            <div class="store-base">
+                <div class="store-window"></div>
+                <div class="store-door"></div>
+            </div>
+            <div class="awning"></div>
+        </div>
+    </div>
+
+    <!-- Botón de redirección a Login -->
+    <button class="btn-start" onclick="window.location.href='login.html'">
+        Comenzar <i class="fas fa-chevron-right" style="font-size: 16px;"></i>
+    </button>
+
+</div>
+
+</body>
+</html>

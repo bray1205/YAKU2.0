@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yaku | Configuración</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .settings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; color: var(--primary); }
+        .settings-header h1 { font-size: 20px; font-weight: 800; color: var(--text-dark); }
+        .profile-card { background: white; border-radius: 20px; padding: 16px 20px; display: flex; align-items: center; margin-bottom: 24px; border: 1px solid var(--border-light); }
+        .profile-card .avatar { font-size: 40px; }
+        .profile-card .info { flex: 1; margin-left: 16px; }
+        .profile-card h3 { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .profile-card p { font-size: 13px; color: var(--text-muted); }
+        .settings-list { background: white; border-radius: 20px; border: 1px solid var(--border-light); overflow: hidden; }
+        .s-item { display: flex; align-items: center; padding: 18px 20px; border-bottom: 1px solid #F0F0F5; text-decoration: none; color: var(--text-dark); background: transparent; border-top: none; border-left: none; border-right: none; width: 100%; text-align: left; cursor: pointer; font-size: 16px; font-family: inherit;}
+        .s-item:last-child { border-bottom: none; }
+        .s-item i.left-icon { width: 32px; font-size: 20px; }
+        .s-item .text { flex: 1; font-weight: 800; }
+        .s-item.logout { color: #E74C3C; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="view-container">
+        <div class="settings-header">
+            <a href="index.html" style="color: var(--primary); text-decoration: none;"><i class="fas fa-chevron-left"></i></a>
+            <h1>Configuración</h1>
+            <i class="fas fa-cog"></i>
+        </div>
+
+        <div class="profile-card">
+            <div class="avatar">👩🏻</div>
+            <div class="info">
+                <h3>Dulce</h3>
+                <p>Miembro desde: 2026</p>
+            </div>
+        </div>
+
+        <div class="settings-list">
+            <button class="s-item" onclick="exportarCSV()">
+                <i class="fas fa-file-excel left-icon" style="color: #10B981;"></i>
+                <span class="text">Descargar historial (CSV)</span>
+            </button>
+            <button class="s-item" onclick="borrarDatos()">
+                <i class="fas fa-trash-alt left-icon" style="color: #EF4444;"></i>
+                <span class="text">Borrar datos financieros</span>
+            </button>
+            <div class="s-item"><i class="fas fa-bell left-icon"></i><span class="text">Notificaciones</span></div>
+            <div class="s-item"><i class="fas fa-globe left-icon"></i><span class="text">Idioma</span></div>
+            <button class="s-item logout" onclick="cerrarSesion()">
+                <i class="fas fa-sign-out-alt left-icon"></i>
+                <span class="text">Cerrar sesión</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-btn"><i class="fas fa-home"></i><span>Inicio</span></a>
+        <a href="misfinanzas.html" class="nav-btn"><i class="fas fa-chart-bar"></i><span>Reportes</span></a>
+        <a href="#" class="nav-btn"><i class="far fa-question-circle"></i><span>Ayuda</span></a>
+        <a href="configuracion.html" class="nav-btn active"><i class="fas fa-user"></i><span>Perfil</span></a>
+    </div>
+</div>
+
+<script>
+    function exportarCSV() {
+        const transacciones = JSON.parse(localStorage.getItem('yaku_data')) || [];
+        if (transacciones.length === 0) {
+            alert('No hay datos para exportar.');
+            return;
+        }
+        let csvContent = "data:text/csv;charset=utf-8,Fecha,Tipo,Categoría,Detalle,Método,Monto\n";
+        transacciones.forEach(t => {
+            const fecha = new Date(t.fecha).toLocaleDateString();
+            csvContent += `${fecha},${t.tipo},"${t.categoria}","${t.detalle}",${t.metodo},${t.monto}\n`;
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "yaku_reporte.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function borrarDatos() {
+        if(confirm("¿Estás seguro de eliminar todo tu historial? El saldo volverá a S/ 0.00")) {
+            localStorage.removeItem('yaku_data');
+            alert('Datos eliminados correctamente.');
+        }
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('yaku_token');
+        window.location.href = 'login.html';
+    }
+</script>
+</body>
+</html>

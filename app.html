@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yaku | App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #F8F9FE;
+            --text-dark: #1E1E3F;
+            --text-muted: #6B728E;
+            --primary: #5B4DC8;
+            --border-light: #E5E7EB;
+            
+            /* Colores de las tarjetas */
+            --c-blue: #D4E6FB; --c-orange: #FCECD9; --c-green-light: #D5EFD9;
+            --c-green-mint: #DDF3D6; --c-yellow: #FDF0CD; --c-purple: #EAE2FC;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+        body { background-color: #E5E7EB; display: flex; justify-content: center; min-height: 100vh; }
+
+        .app-container {
+            width: 100%; max-width: 420px; background: #FFFFFF;
+            min-height: 100vh; position: relative; overflow-x: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column;
+        }
+
+        /* Contenedor de vistas con scroll independiente */
+        .view-container { flex: 1; overflow-y: auto; padding: 24px 20px 90px; }
+        .view { display: none; animation: fadeIn 0.2s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- HOME & SETTINGS (Estilos Anteriores) --- */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; color: var(--primary); font-size: 24px; }
+        .logo-container { text-align: center; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: -10px;}
+        .logo-icons { font-size: 18px; margin-bottom: -8px; margin-left: 15px;}
+        .logo-text { font-size: 32px; font-weight: 900; color: #023E3A; letter-spacing: -1px; }
+        .logo-wave { width: 50px; height: 6px; background: #3DB2FF; border-radius: 10px; margin-top: -2px;}
+
+        .greeting-card { background: white; border-radius: 20px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 24px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 1px solid var(--border-light); }
+        .avatar { width: 56px; height: 56px; background: #F0EDFF; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 40px; }
+        .greeting-text h2 { font-size: 19px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
+        .greeting-text p { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+
+        .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .card-btn { border-radius: 20px; padding: 22px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; border: none; cursor: pointer; transition: transform 0.1s; }
+        .card-btn:active { transform: scale(0.95); }
+        .card-btn .icon { font-size: 42px; margin-bottom: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .card-btn span { font-weight: 800; font-size: 15px; color: var(--text-dark); }
+        .bg-cap { background: var(--c-blue); } .bg-reg { background: var(--c-orange); } .bg-fin { background: var(--c-green-light); } .bg-pro { background: var(--c-green-mint); } .bg-cre { background: var(--c-yellow); } .bg-neg { background: var(--c-purple); }
+
+        /* --- NUEVA TRANSACCIÓN (Registra) --- */
+        .reg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); }
+        .reg-header h1 { font-size: 20px; font-weight: 900; color: var(--text-dark); }
+        .reg-header p { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+        .btn-close { width: 32px; height: 32px; border-radius: 50%; background: #F3F4F6; border: none; color: var(--text-dark); font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+
+        .form-section { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px; }
+        
+        /* Botones Tipo Movimiento */
+        .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .type-btn { background: #F8F9FA; border: 1px solid transparent; border-radius: 16px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s; }
+        .type-btn .t-icon { width: 32px; height: 32px; border-radius: 10px; background: white; display: flex; justify-content: center; align-items: center; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .type-btn span { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+        
+        .type-btn.active { background: var(--primary); }
+        .type-btn.active span { color: white; }
+        .type-btn.active .t-icon { background: rgba(255,255,255,0.2); color: white; box-shadow: none; }
+        
+        /* Colores íconos inactivos */
+        .type-btn[data-type="venta"] .t-icon { color: var(--primary); }
+        .type-btn[data-type="ingreso"] .t-icon { color: #10B981; }
+        .type-btn[data-type="compra"] .t-icon { color: #3B82F6; }
+        .type-btn[data-type="gasto"] .t-icon { color: #EF4444; }
+
+        /* Card Monto */
+        .amount-card { background: #FAFAFA; border: 1px solid var(--border-light); border-radius: 20px; padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .amount-card span.lbl { font-size: 12px; color: var(--text-muted); font-weight: 700; margin-bottom: 5px; }
+        .amount-input-group { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .amount-input-group span.currency { font-size: 24px; font-weight: 800; color: var(--primary); }
+        .amount-input-group input { font-size: 36px; font-weight: 900; color: var(--text-dark); background: transparent; border: none; width: 120px; text-align: center; outline: none; font-family: 'Nunito', sans-serif; }
+        .tag-green { background: #DDF3D6; color: #065F46; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 10px; }
+
+        /* Inputs Generales */
+        .input-box { width: 100%; background: #FAFAFA; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px 16px; font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none; appearance: none; }
+        .input-box:focus { border-color: var(--primary); background: white; }
+
+        /* Botones Método Cobro */
+        .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .method-btn { background: white; border: 1px solid var(--border-light); border-radius: 12px; padding: 12px 5px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 800; color: var(--text-dark); transition: all 0.2s; }
+        .method-btn i { font-size: 14px; }
+        
+        .method-btn.active { border-color: var(--primary); color: var(--primary); background: #F8F7FF; }
+        .method-btn[data-method="yape"] i { color: #8B5CF6; }
+        .method-btn[data-method="efectivo"] i { color: #10B981; }
+        .method-btn[data-method="transferencia"] i { color: #3B82F6; }
+
+        /* Fecha y Footer */
+        .date-box { display: flex; justify-content: space-between; align-items: center; background: #FAFAFA; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px 16px; margin-top: 15px; }
+        .date-box .d-text { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+        .date-box .d-text i { color: var(--text-muted); margin-right: 8px; }
+        .date-box .d-change { font-size: 13px; font-weight: 800; color: var(--primary); cursor: pointer; }
+
+        .btn-submit { width: 100%; background: var(--primary); color: white; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; margin-top: 24px; }
+        .btn-submit:active { transform: scale(0.98); }
+
+        /* --- MENÚ INFERIOR --- */
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; align-items: center; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-light); z-index: 10; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-dark); background: none; border: none; cursor: pointer; }
+        .nav-btn i { font-size: 22px; color: var(--text-muted); }
+        .nav-btn span { font-size: 12px; font-weight: 800; color: var(--text-muted); }
+        .nav-btn.active i, .nav-btn.active span { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <div class="view-container">
+        <!-- VISTA: INICIO -->
+        <div id="view-home" class="view active">
+            <div class="top-bar">
+                <i class="fas fa-bars"></i>
+                <div class="logo-container">
+                    <div class="logo-icons">🎋💧</div>
+                    <div class="logo-text">Yaku</div>
+                    <div class="logo-wave"></div>
+                </div>
+                <i class="fas fa-bell"></i>
+            </div>
+
+            <div class="greeting-card">
+                <div class="avatar">👩🏻</div>
+                <div class="greeting-text">
+                    <h2>¡Hola, Dulce!</h2>
+                    <p>Que tengas un gran día ✨</p>
+                </div>
+            </div>
+
+            <div class="grid-menu">
+                <button class="card-btn bg-cap">
+                    <div class="icon">🎓</div>
+                    <span>Capacítate</span>
+                </button>
+                <button class="card-btn bg-reg" onclick="switchTab('register')">
+                    <div class="icon">🧾</div>
+                    <span>Registra</span>
+                </button>
+                <button class="card-btn bg-fin">
+                    <div class="icon">📈</div>
+                    <span>Mis finanzas</span>
+                </button>
+                <button class="card-btn bg-pro">
+                    <div class="icon">🏆</div>
+                    <span>Mi progreso</span>
+                </button>
+                <button class="card-btn bg-cre">
+                    <div class="icon">🪙</div>
+                    <span>Crédito Yaku</span>
+                </button>
+                <button class="card-btn bg-neg">
+                    <div class="icon">🏪</div>
+                    <span>Mi negocio</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- VISTA: NUEVA TRANSACCIÓN -->
+        <div id="view-register" class="view">
+            <div class="reg-header">
+                <div>
+                    <h1>Nueva Transacción</h1>
+                    <p>Registra tus movimientos diarios al instante</p>
+                </div>
+                <button class="btn-close" onclick="switchTab('home')"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="form-section">
+                <label class="form-label">TIPO DE MOVIMIENTO</label>
+                <div class="type-grid">
+                    <button class="type-btn active" data-type="venta" onclick="selectType(this)">
+                        <div class="t-icon"><i class="fas fa-shopping-cart"></i></div>
+                        <span>Venta</span>
+                    </button>
+                    <button class="type-btn" data-type="ingreso" onclick="selectType(this)">
+                        <div class="t-icon"><i class="fas fa-arrow-up"></i></div>
+                        <span>Ingreso</span>
+                    </button>
+                    <button class="type-btn" data-type="compra" onclick="selectType(this)">
+                        <div class="t-icon"><i class="fas fa-shopping-bag"></i></div>
+                        <span>Compra</span>
+                    </button>
+                    <button class="type-btn" data-type="gasto" onclick="selectType(this)">
+                        <div class="t-icon"><i class="fas fa-arrow-down"></i></div>
+                        <span>Gasto</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-section amount-card">
+                <span class="lbl">Monto en Soles</span>
+                <div class="amount-input-group">
+                    <span class="currency">S/</span>
+                    <input type="number" value="50.00" step="0.01">
+                </div>
+                <div class="tag-green">+ Suma a tus ventas del día</div>
+            </div>
+
+            <div class="form-section">
+                <label class="form-label">Categoría o concepto</label>
+                <select class="input-box">
+                    <option>🛍️ Venta en mostrador / Local</option>
+                    <option>📦 Venta online</option>
+                    <option>📱 Servicio brindado</option>
+                </select>
+            </div>
+
+            <div class="form-section">
+                <label class="form-label">Detalle o cliente (opcional)</label>
+                <input type="text" class="input-box" value="Venta - Cliente 001" placeholder="Ej. Juan Pérez">
+            </div>
+
+            <div class="form-section">
+                <label class="form-label">Método de cobro</label>
+                <div class="method-grid">
+                    <button class="method-btn active" data-method="yape" onclick="selectMethod(this)">
+                        <i class="fas fa-heart"></i> Yape / Plin
+                    </button>
+                    <button class="method-btn" data-method="efectivo" onclick="selectMethod(this)">
+                        <i class="fas fa-money-bill-wave"></i> Efectivo
+                    </button>
+                    <button class="method-btn" data-method="transferencia" onclick="selectMethod(this)">
+                        <i class="fas fa-university"></i> Transferencia
+                    </button>
+                </div>
+            </div>
+
+            <div class="date-box">
+                <span class="d-text"><i class="far fa-calendar-alt"></i> Fecha: <strong>Hoy, 26 Oct 2026</strong></span>
+                <span class="d-change">Cambiar</span>
+            </div>
+
+            <button class="btn-submit" onclick="alert('¡Transacción guardada con éxito!')">
+                <i class="fas fa-check"></i> Guardar transacción
+            </button>
+        </div>
+    </div>
+
+    <!-- MENÚ INFERIOR -->
+    <div class="bottom-nav" id="main-nav">
+        <button class="nav-btn active" id="tab-home" onclick="switchTab('home')">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </button>
+        <button class="nav-btn" id="tab-reports">
+            <i class="fas fa-chart-bar"></i>
+            <span>Reportes</span>
+        </button>
+        <button class="nav-btn" id="tab-help">
+            <i class="far fa-question-circle"></i>
+            <span>Ayuda</span>
+        </button>
+        <button class="nav-btn" id="tab-profile">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </button>
+    </div>
+
+</div>
+
+<script>
+    // Navegación entre pantallas
+    function switchTab(tab) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        
+        if(tab === 'home') {
+            document.getElementById('view-home').classList.add('active');
+            document.getElementById('main-nav').style.display = 'flex'; // Mostrar menú inferior
+        } else if(tab === 'register') {
+            document.getElementById('view-register').classList.add('active');
+            document.getElementById('main-nav').style.display = 'none'; // Ocultar menú en formulario
+        }
+        
+        document.querySelector('.view-container').scrollTo(0,0);
+    }
+
+    // Interacción: Tipo de Movimiento
+    function selectType(btnElement) {
+        document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+
+    // Interacción: Método de Cobro
+    function selectMethod(btnElement) {
+        document.querySelectorAll('.method-btn').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+</script>
+
+</body>
+</html>

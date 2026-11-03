@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yaku | Iniciar Sesión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        /* Fondo de la pantalla con las hojas verdes simuladas en la base */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #F8FAFC;
+            background-image: radial-gradient(circle at center 120%, #D3EBD3 0%, #F8FAFC 50%);
+            background-attachment: fixed;
+        }
+
+        .login-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 40px 24px; 
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Títulos */
+        .header-text { text-align: center; margin-bottom: 24px; }
+        .header-text h1 { font-size: 22px; font-weight: 900; color: #1E1E3F; margin: 0 0 5px 0; }
+        .header-text p { font-size: 13px; font-weight: 700; color: #4B5563; margin: 0; }
+
+        /* Botones de switch (Iniciar sesión / Registrarse) */
+        .toggle-container {
+            display: flex;
+            background: #F0EDFF;
+            border-radius: 30px;
+            padding: 4px;
+            width: 100%;
+            max-width: 320px;
+            margin-bottom: 30px;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            background: transparent;
+            color: #4B5563;
+            transition: 0.3s ease;
+        }
+        .toggle-btn.active {
+            background: #5B4DC8;
+            color: white;
+            box-shadow: 0 4px 10px rgba(91, 77, 200, 0.2);
+        }
+
+        /* Formulario e Inputs */
+        .login-form { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 16px; }
+        
+        .input-group { position: relative; width: 100%; }
+        .input-group i.icon-left { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #6D28D9; font-size: 16px; }
+        .input-group i.icon-right { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 16px; cursor: pointer; }
+        
+        .input-box { 
+            width: 100%; 
+            background: white; 
+            border: 2px solid #F3F4F6; 
+            border-radius: 20px; 
+            padding: 16px 45px; /* Espacio para los iconos */
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #1E1E3F; 
+            outline: none; 
+            transition: 0.2s; 
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+        .input-box:focus { border-color: #5B4DC8; box-shadow: 0 0 0 3px rgba(91, 77, 200, 0.1); }
+        .input-box::placeholder { color: #9CA3AF; }
+
+        .forgot-link { text-align: center; font-size: 12px; font-weight: 700; color: #5B4DC8; text-decoration: none; margin-top: -4px; margin-bottom: 8px; }
+
+        /* Botón Principal */
+        .btn-login { 
+            width: 100%; 
+            background: linear-gradient(90deg, #6D28D9, #5B4DC8); 
+            color: white; 
+            border: none; 
+            border-radius: 20px; 
+            padding: 16px; 
+            font-size: 16px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            box-shadow: 0 4px 15px rgba(91, 77, 200, 0.3);
+        }
+        .btn-login:active { transform: scale(0.98); }
+
+        /* Separador y Redes Sociales */
+        .divider { display: flex; align-items: center; text-align: center; width: 100%; max-width: 320px; margin: 24px 0; color: #6B7280; font-size: 12px; font-weight: 700; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #E5E7EB; }
+        .divider:not(:empty)::before { margin-right: 10px; }
+        .divider:not(:empty)::after { margin-left: 10px; }
+
+        .social-login { display: flex; gap: 20px; justify-content: center; width: 100%; margin-bottom: 30px;}
+        .social-btn { width: 50px; height: 50px; border-radius: 50%; background: white; border: 1px solid #F3F4F6; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: 0.2s; }
+        .social-btn:active { transform: scale(0.95); }
+
+        .footer-text { text-align: center; font-size: 12px; font-weight: 700; color: #6B7280; margin-top: auto; }
+        .footer-text a { color: #1E1E3F; text-decoration: none; font-weight: 900; }
+        
+        /* Hojas de adorno inferiores (simulando la imagen) */
+        .leaves-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%2386efac" fill-opacity="0.4" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>'); background-size: cover; background-position: bottom; z-index: 1; pointer-events: none; opacity: 0.7;}
+    </style>
+</head>
+<body>
+<div class="app-container" style="background: transparent; box-shadow: none;">
+    <div class="login-container">
+        
+        <div class="header-text">
+            <h1>¡Bienvenida a Yaku!</h1>
+            <p>Ingresa o crea tu cuenta</p>
+        </div>
+
+        <div class="toggle-container">
+            <button class="toggle-btn active">Iniciar sesión</button>
+            <button class="toggle-btn" type="button">Registrarse</button>
+        </div>
+
+        <form class="login-form" onsubmit="iniciarSesion(event)">
+            <!-- Input Email -->
+            <div class="input-group">
+                <i class="fas fa-envelope icon-left"></i>
+                <input type="email" class="input-box" placeholder="Correo electrónico" required value="demo@yaku.pe">
+            </div>
+            
+            <!-- Input Password -->
+            <div class="input-group">
+                <i class="fas fa-lock icon-left"></i>
+                <input type="password" class="input-box" placeholder="Contraseña" required value="123456">
+                <i class="fas fa-eye icon-right"></i>
+            </div>
+            
+            <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+            
+            <button type="submit" class="btn-login">Ingresar</button>
+        </form>
+
+        <div class="divider">o continúa con</div>
+        
+        <div class="social-login">
+            <button class="social-btn"><i class="fab fa-google" style="color: #DB4437;"></i></button>
+            <button class="social-btn"><i class="fab fa-apple" style="color: #000000;"></i></button>
+        </div>
+
+        <p class="footer-text">¿Aún no tienes cuenta? <a href="#">Regístrate</a></p>
+    </div>
+    
+    <div class="leaves-bottom"></div>
+</div>
+
+<script>
+    function iniciarSesion(e) {
+        e.preventDefault();
+        // Simula la creación de una sesión guardando un token en LocalStorage
+        localStorage.setItem('yaku_token', 'sesion_activa_123');
+        // Redirige al dashboard principal
+        window.location.href = 'index.html';
+    }
+
+    // Funcionalidad básica para alternar la visibilidad de la contraseña
+    document.querySelector('.fa-eye').addEventListener('click', function() {
+        const passwordInput = this.previousElementSibling;
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            this.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            this.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+</script>
+</body>
+</html>

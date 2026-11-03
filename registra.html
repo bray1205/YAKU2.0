@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Yaku | Nueva Transacción</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="estilos.css">
+    <style>
+        .reg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-light); }
+        .reg-header h1 { font-size: 20px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px;}
+        .reg-header p { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .btn-close { width: 32px; height: 32px; border-radius: 50%; background: #F3F4F6; color: var(--text-dark); display: flex; justify-content: center; align-items: center; text-decoration: none; transition: 0.2s;}
+        .btn-close:active { background: #E5E7EB; transform: scale(0.9); }
+        
+        .form-section { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px;}
+        
+        .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .type-btn { background: #F8F9FA; border: 1px solid transparent; border-radius: 16px; padding: 12px 5px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s ease;}
+        .type-btn .t-icon { width: 32px; height: 32px; border-radius: 10px; background: white; display: flex; justify-content: center; align-items: center; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        .type-btn span { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+        
+        .type-btn.active { background: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(91, 77, 200, 0.2); }
+        .type-btn.active span { color: white; }
+        .type-btn.active .t-icon { background: rgba(255,255,255,0.2); color: white; box-shadow: none;}
+        
+        .type-btn[data-type="venta"] .t-icon { color: var(--primary); }
+        .type-btn[data-type="ingreso"] .t-icon { color: #10B981; }
+        .type-btn[data-type="compra"] .t-icon { color: #3B82F6; }
+        .type-btn[data-type="gasto"] .t-icon { color: #EF4444; }
+
+        .amount-card { background: #FAFAFA; border: 1px solid var(--border-light); border-radius: 20px; padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+        .amount-card:focus-within { border-color: var(--primary); background: white; box-shadow: 0 4px 15px rgba(91, 77, 200, 0.05); }
+        .amount-input-group { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .amount-input-group span.currency { font-size: 26px; font-weight: 800; color: var(--primary); }
+        .amount-input-group input { font-size: 38px; font-weight: 900; color: var(--text-dark); background: transparent; border: none; width: 140px; text-align: center; outline: none; }
+        .amount-input-group input::placeholder { color: #D1D5DB; }
+        .tag-status { font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 10px; transition: 0.3s; }
+
+        .input-box { width: 100%; background: #FAFAFA; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px 16px; font-size: 14px; font-weight: 700; color: var(--text-dark); outline: none; transition: 0.2s;}
+        .input-box:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(91, 77, 200, 0.1); }
+        select.input-box { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill="%236B728E" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); background-repeat: no-repeat; background-position-x: 95%; background-position-y: 50%; }
+
+        .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .method-btn { background: white; border: 1px solid var(--border-light); border-radius: 12px; padding: 12px 5px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 800; color: var(--text-dark); transition: all 0.2s;}
+        .method-btn:active { transform: scale(0.95); }
+        .method-btn.active { border-color: var(--primary); color: var(--primary); background: #F8F7FF; box-shadow: 0 4px 10px rgba(91, 77, 200, 0.1); }
+        .method-btn[data-method="yape"] i { color: #8B5CF6; } 
+        .method-btn[data-method="efectivo"] i { color: #10B981; } 
+        .method-btn[data-method="transferencia"] i { color: #3B82F6; }
+
+        .date-box { display: flex; justify-content: space-between; align-items: center; background: #FAFAFA; border: 1px solid var(--border-light); border-radius: 12px; padding: 14px 16px; margin-top: 15px; }
+        .date-box .d-text { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+        .date-box .d-text i { color: var(--text-muted); margin-right: 8px; }
+        .date-box .d-change { font-size: 13px; font-weight: 800; color: var(--primary); cursor: pointer; }
+
+        .btn-submit { width: 100%; background: var(--primary); color: white; border: none; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 800; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; margin-top: 24px; transition: 0.2s;}
+        .btn-submit:active { transform: scale(0.98); background: #4a3eb3; }
+        .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="view-container" style="padding-bottom: 30px;">
+        
+        <div class="reg-header">
+            <div>
+                <h1>Nueva Transacción</h1>
+                <p>Registra tus movimientos diarios al instante</p>
+            </div>
+            <a href="index.html" class="btn-close"><i class="fas fa-times"></i></a>
+        </div>
+
+        <div class="form-section">
+            <label class="form-label">Tipo de movimiento</label>
+            <div class="type-grid">
+                <button class="type-btn active" data-type="venta" onclick="selectType(this)">
+                    <div class="t-icon"><i class="fas fa-shopping-cart"></i></div><span>Venta</span>
+                </button>
+                <button class="type-btn" data-type="ingreso" onclick="selectType(this)">
+                    <div class="t-icon"><i class="fas fa-arrow-up"></i></div><span>Ingreso</span>
+                </button>
+                <button class="type-btn" data-type="compra" onclick="selectType(this)">
+                    <div class="t-icon"><i class="fas fa-shopping-bag"></i></div><span>Compra</span>
+                </button>
+                <button class="type-btn" data-type="gasto" onclick="selectType(this)">
+                    <div class="t-icon"><i class="fas fa-arrow-down"></i></div><span>Gasto</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-section amount-card">
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; margin-bottom: 5px;">Monto en Soles</span>
+            <div class="amount-input-group">
+                <span class="currency">S/</span>
+                <input type="number" id="input-monto" placeholder="0.00" step="0.01" min="0.01">
+            </div>
+            <div class="tag-status" id="amount-tag" style="background: #DDF3D6; color: #065F46;">+ Suma a tus ventas del día</div>
+        </div>
+
+        <div class="form-section">
+            <label class="form-label">Categoría o concepto</label>
+            <select class="input-box" id="categoria-select"></select>
+        </div>
+
+        <div class="form-section">
+            <label class="form-label">Detalle o cliente (opcional)</label>
+            <input type="text" id="input-detalle" class="input-box" placeholder="Ej. Juan Pérez">
+        </div>
+
+        <div class="form-section">
+            <label class="form-label" id="lbl-metodo">Método de cobro</label>
+            <div class="method-grid">
+                <button class="method-btn active" data-method="yape" onclick="selectMethod(this)">
+                    <i class="fas fa-heart"></i> Yape / Plin
+                </button>
+                <button class="method-btn" data-method="efectivo" onclick="selectMethod(this)">
+                    <i class="fas fa-money-bill-wave"></i> Efectivo
+                </button>
+                <button class="method-btn" data-method="transferencia" onclick="selectMethod(this)">
+                    <i class="fas fa-university"></i> Transfer.
+                </button>
+            </div>
+        </div>
+        
+        <div class="date-box">
+            <span class="d-text"><i class="far fa-calendar-alt"></i> Fecha: <strong id="fecha-actual">Cargando...</strong></span>
+            <span class="d-change">Cambiar</span>
+        </div>
+
+        <button class="btn-submit" id="btn-guardar" onclick="guardarTransaccion()">
+            <i class="fas fa-check"></i> <span>Guardar transacción</span>
+        </button>
+
+    </div>
+</div>
+
+<script>
+    const categoriasIngreso = [
+        "🛍️ Venta en mostrador / Local",
+        "📦 Venta online / Delivery",
+        "📱 Servicio brindado",
+        "💰 Otros ingresos"
+    ];
+    
+    const categoriasGasto = [
+        "📦 Compra de mercadería e insumos",
+        "💡 Pago de servicios (Luz, Agua, Internet)",
+        "🚕 Transporte, flete o movilidad",
+        "🔧 Mantenimiento de local",
+        "📉 Otros gastos"
+    ];
+
+    function actualizarCategorias(tipo) {
+        const select = document.getElementById('categoria-select');
+        const lblMetodo = document.getElementById('lbl-metodo');
+        select.innerHTML = '';
+        
+        const opciones = (tipo === 'venta' || tipo === 'ingreso') ? categoriasIngreso : categoriasGasto;
+        
+        opciones.forEach(cat => {
+            let option = document.createElement('option');
+            option.text = cat;
+            select.add(option);
+        });
+
+        lblMetodo.innerText = (tipo === 'venta' || tipo === 'ingreso') ? 'Método de cobro' : 'Método de pago';
+    }
+
+    function selectType(btn) {
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const type = btn.getAttribute('data-type');
+        const tag = document.getElementById('amount-tag');
+        
+        if (type === 'venta' || type === 'ingreso') {
+            tag.style.background = '#DDF3D6';
+            tag.style.color = '#065F46';
+            tag.innerText = (type === 'venta') ? '+ Suma a tus ventas' : '+ Suma a tus ingresos';
+        } else {
+            tag.style.background = '#FEE2E2';
+            tag.style.color = '#991B1B';
+            tag.innerText = '- Resta a tus fondos';
+        }
+
+        actualizarCategorias(type);
+    }
+
+    function selectMethod(btn) {
+        document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    window.onload = function() {
+        const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+        const hoy = new Date();
+        const fechaFormateada = `Hoy, ${hoy.getDate()} ${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
+        document.getElementById('fecha-actual').innerText = fechaFormateada;
+        
+        actualizarCategorias('venta');
+        document.getElementById('input-monto').focus();
+    };
+
+    function guardarTransaccion() {
+        const montoInput = document.getElementById('input-monto').value;
+        const btnGuardar = document.getElementById('btn-guardar');
+
+        // Validación
+        if (!montoInput || parseFloat(montoInput) <= 0) {
+            alert('Por favor, ingresa un monto válido mayor a cero.');
+            document.getElementById('input-monto').focus();
+            return;
+        }
+
+        // Efecto visual de carga
+        btnGuardar.disabled = true;
+        btnGuardar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Guardando...</span>';
+
+        // Capturar los valores reales de la interfaz
+        const tipo = document.querySelector('.type-btn.active').dataset.type;
+        const metodo = document.querySelector('.method-btn.active').dataset.method;
+        const categoria = document.getElementById('categoria-select').value;
+        const detalle = document.getElementById('input-detalle').value;
+
+        // Crear el objeto de transacción
+        const nuevaTransaccion = {
+            id: Date.now(), // Identificador único
+            tipo: tipo,
+            monto: parseFloat(montoInput),
+            categoria: categoria,
+            detalle: detalle,
+            metodo: metodo,
+            fecha: new Date().toISOString()
+        };
+
+        // Recuperar historial previo, agregar el nuevo y guardar
+        const transacciones = JSON.parse(localStorage.getItem('yaku_data')) || [];
+        transacciones.push(nuevaTransaccion);
+        localStorage.setItem('yaku_data', JSON.stringify(transacciones));
+
+        // Redirigir al inicio después de una breve pausa
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 800);
+    }
+</script>
+</body>
+</html>
