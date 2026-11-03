@@ -1,3 +1,29 @@
+<script>
+    // CANDADO DE SEGURIDAD: Si no hay sesión, mandar a la bienvenida
+    if (!localStorage.getItem('yaku_token')) {
+        window.location.replace('splash.html');
+    }
+
+    // Al cargar la página, leer el nombre guardado (o usar "Dulce" por defecto)
+    document.addEventListener("DOMContentLoaded", () => {
+        const nombreGuardado = localStorage.getItem('yaku_nombre');
+        if (nombreGuardado) {
+            document.getElementById('nombre-usuario').innerText = nombreGuardado;
+        }
+    });
+
+    // Función para editar y guardar el nombre en localStorage
+    function editarNombre() {
+        const nombreActual = document.getElementById('nombre-usuario').innerText;
+        const nuevoNombre = prompt("¿Cómo te gustaría que te llamemos?", nombreActual);
+        
+        if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
+            document.getElementById('nombre-usuario').innerText = nuevoNombre.trim();
+            localStorage.setItem('yaku_nombre', nuevoNombre.trim());
+        }
+    }
+</script>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
