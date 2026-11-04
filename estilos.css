@@ -10,44 +10,43 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
 
-body { background-color: #E5E7EB; display: flex; justify-content: center; min-height: 100vh; }
+body { background-color: var(--bg-color); display: flex; justify-content: center; min-height: 100vh; }
 
 .app-container {
-    width: 100%; max-width: 420px; background: #FFFFFF;
+    width: 100%; 
+    max-width: 1400px; /* Expande la app hasta 1400px en monitores grandes */
+    background: transparent;
     min-height: 100vh; position: relative; overflow-x: hidden;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column;
+    display: flex; flex-direction: column;
 }
 
-.view-container { flex: 1; overflow-y: auto; padding: 24px 20px 90px; }
+.view-container { flex: 1; overflow-y: auto; padding: 24px 5% 90px; }
 
-/* Menú inferior (Bottom Nav) compartido */
-.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; background: white; display: flex; justify-content: space-around; align-items: center; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-light); z-index: 10; border-radius: 24px 24px 0 0; }
+/* Menú inferior (Bottom Nav) expandido */
+.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1400px; background: white; display: flex; justify-content: space-around; align-items: center; padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-light); z-index: 10; border-radius: 24px 24px 0 0; }
 .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-dark); background: none; border: none; cursor: pointer; text-decoration: none;}
 .nav-btn i { font-size: 22px; color: var(--text-muted); transition: 0.2s;}
 .nav-btn span { font-size: 12px; font-weight: 800; color: var(--text-muted); }
 .nav-btn.active i, .nav-btn.active span { color: var(--primary); }
 
 /* =========================================
-   ADAPTABILIDAD PARA PC Y TABLETS
+   DISEÑO FLUIDO PARA TODAS LAS PANTALLAS
    ========================================= */
+
+/* Obliga a la cuadrícula de botones a reorganizarse según el ancho de la pantalla */
+.grid-menu {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+    gap: 20px !important;
+}
+
+/* Ajustes de tamaño y espaciado para pantallas grandes (PC y Tablets) */
 @media (min-width: 768px) {
-    body {
-        align-items: center; /* Centra la app verticalmente en PC */
-        background-color: #E2E8F0; /* Fondo más oscuro para destacar la app */
-    }
-
-    .app-container {
-        min-height: auto;
-        height: 90vh; /* Altura proporcional */
-        max-height: 850px;
-        border-radius: 30px; /* Bordes redondeados simulando un teléfono */
-        border: 8px solid #ffffff; /* Marco del teléfono */
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    }
-
-    /* Ajuste del menú inferior para que respete el borde del teléfono en PC */
-    .bottom-nav {
-        position: absolute; 
-        border-radius: 24px 24px 22px 22px; 
-    }
+    .greeting-card { padding: 30px 40px !important; border-radius: 30px !important; }
+    .greeting-card .avatar { width: 80px !important; height: 80px !important; font-size: 55px !important; }
+    .greeting-card h2 { font-size: 28px !important; }
+    .top-bar { font-size: 28px !important; margin-bottom: 40px !important; }
+    .menu-btn { padding: 35px 20px !important; }
+    .menu-btn .icon-img { width: 70px !important; height: 70px !important; font-size: 45px !important; }
+    .menu-btn span { font-size: 18px !important; }
 }
