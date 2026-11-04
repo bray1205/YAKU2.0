@@ -24,7 +24,7 @@
         /* Barra de progreso */
         .progress-container { display: flex; align-items: center; gap: 10px; }
         .progress-bar-bg { flex: 1; height: 6px; background: #E5E7EB; border-radius: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--primary); border-radius: 10px; }
+        .progress-fill { height: 100%; background: var(--primary); border-radius: 10px; transition: width 0.3s; }
         .progress-text { font-size: 12px; font-weight: 800; color: var(--primary); }
         
         .btn-action { background: var(--c-purple); color: var(--primary); border: none; padding: 6px 12px; border-radius: 12px; font-weight: 800; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
@@ -35,7 +35,7 @@
         .active-view { display: block; }
         
         /* Detalle del curso */
-        .hero-img { width: 100%; height: 180px; background: var(--c-purple); border-radius: 24px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; font-size: 80px; }
+        .hero-img { width: 100%; height: 160px; border-radius: 24px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; font-size: 70px; color: white; }
         .class-list { margin-top: 20px; }
         .class-item { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border-light); cursor: pointer; }
         .play-icon { color: var(--primary); font-size: 20px; margin-right: 16px; }
@@ -56,6 +56,13 @@
         .learning-points li { display: flex; gap: 10px; font-size: 14px; margin-bottom: 8px; color: var(--text-muted); }
         .learning-points li i { color: #10B981; margin-top: 2px; }
 
+        /* Estilos del Cuestionario (Quiz) */
+        .quiz-question { font-size: 18px; font-weight: 800; color: var(--text-dark); margin-bottom: 20px; text-align: center; }
+        .quiz-option { width: 100%; background: white; border: 2px solid var(--border-light); padding: 16px; border-radius: 16px; font-size: 15px; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; cursor: pointer; text-align: left; transition: 0.3s; }
+        .quiz-option:hover { border-color: var(--primary); color: var(--primary); }
+        .quiz-option.correct { background: #D1FAE5; border-color: #10B981; color: #047857; }
+        .quiz-option.wrong { background: #FEE2E2; border-color: #EF4444; color: #B91C1C; }
+
         /* Mascota y mensajes */
         .mascot-box { display: flex; gap: 16px; align-items: flex-end; margin-bottom: 30px; }
         .mascot-img { font-size: 50px; }
@@ -63,6 +70,7 @@
         
         /* Botones fijos inferiores */
         .fixed-bottom-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; background: var(--primary); color: white; text-align: center; padding: 16px; border-radius: 20px; font-weight: 800; font-size: 16px; cursor: pointer; text-decoration: none; box-shadow: 0 8px 20px rgba(91, 77, 200, 0.3); border: none; }
+        .fixed-bottom-btn:disabled { background: var(--text-muted); box-shadow: none; cursor: not-allowed; }
         
         .success-screen { text-align: center; padding-top: 40px; }
         .success-screen .mascot-img { font-size: 120px; margin-bottom: 20px; display: block; }
@@ -78,18 +86,12 @@
             Cursos disponibles
         </div>
 
-        <!-- Curso 1: Economía (En progreso) -->
-        <div class="course-card" onclick="openCourse()">
-            <div class="course-icon" style="background: var(--c-green-light); color: #047857;">
-                <i class="fas fa-wallet"></i>
-            </div>
+        <div class="course-card" onclick="openCourse('financiera')">
+            <div class="course-icon" style="background: var(--c-green-light); color: #047857;"><i class="fas fa-wallet"></i></div>
             <div class="course-info">
                 <h3>Educación Financiera Básica</h3>
                 <p>Aprende a manejar tu dinero, entender la economía y tomar mejores decisiones.</p>
-                <div class="course-meta">
-                    <span><i class="far fa-clock"></i> 40 min</span>
-                    <span><i class="fas fa-signal"></i> Nivel básico</span>
-                </div>
+                <div class="course-meta"><span><i class="far fa-clock"></i> 40 min</span> <span><i class="fas fa-signal"></i> Básico</span></div>
                 <div class="progress-container">
                     <div class="progress-bar-bg"><div class="progress-fill" style="width: 60%;"></div></div>
                     <span class="progress-text">60%</span>
@@ -98,18 +100,12 @@
             </div>
         </div>
 
-        <!-- Curso 2: Gestión -->
-        <div class="course-card" onclick="openCourse()">
-            <div class="course-icon" style="background: var(--c-orange); color: #D97706;">
-                <i class="fas fa-store"></i>
-            </div>
+        <div class="course-card" onclick="openCourse('gestion')">
+            <div class="course-icon" style="background: var(--c-orange); color: #D97706;"><i class="fas fa-store"></i></div>
             <div class="course-info">
                 <h3>Gestión de tu Negocio</h3>
                 <p>Organiza tu negocio y mejora tu planificación diaria.</p>
-                <div class="course-meta">
-                    <span><i class="far fa-clock"></i> 35 min</span>
-                    <span><i class="fas fa-signal"></i> Nivel básico</span>
-                </div>
+                <div class="course-meta"><span><i class="far fa-clock"></i> 35 min</span> <span><i class="fas fa-signal"></i> Básico</span></div>
                 <div class="progress-container">
                     <div class="progress-bar-bg"><div class="progress-fill" style="width: 0%;"></div></div>
                     <button class="btn-action">Iniciar <i class="fas fa-chevron-right"></i></button>
@@ -117,37 +113,12 @@
             </div>
         </div>
 
-        <!-- Curso 3: Economía para Emprendedores (Nuevo Extenso) -->
-        <div class="course-card" onclick="openCourse()">
-            <div class="course-icon" style="background: var(--c-blue); color: #1D4ED8;">
-                <i class="fas fa-chart-line"></i>
-            </div>
+        <div class="course-card" onclick="openCourse('economia')">
+            <div class="course-icon" style="background: var(--c-blue); color: #1D4ED8;"><i class="fas fa-chart-line"></i></div>
             <div class="course-info">
                 <h3>Economía para Emprendedores</h3>
-                <p>Domina conceptos de rentabilidad, punto de equilibrio, inflación y fijación de precios.</p>
-                <div class="course-meta">
-                    <span><i class="far fa-clock"></i> 55 min</span>
-                    <span><i class="fas fa-signal"></i> Avanzado</span>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-bar-bg"><div class="progress-fill" style="width: 0%;"></div></div>
-                    <button class="btn-action">Iniciar <i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Curso 4: Ventas -->
-        <div class="course-card" onclick="openCourse()">
-            <div class="course-icon" style="background: var(--c-purple); color: #6D28D9;">
-                <i class="fas fa-users"></i>
-            </div>
-            <div class="course-info">
-                <h3>Ventas y Atención al Cliente</h3>
-                <p>Aprende a atraer y fidelizar más clientes.</p>
-                <div class="course-meta">
-                    <span><i class="far fa-clock"></i> 30 min</span>
-                    <span><i class="fas fa-signal"></i> Intermedio</span>
-                </div>
+                <p>Domina conceptos de rentabilidad, punto de equilibrio e inflación.</p>
+                <div class="course-meta"><span><i class="far fa-clock"></i> 55 min</span> <span><i class="fas fa-signal"></i> Avanzado</span></div>
                 <div class="progress-container">
                     <div class="progress-bar-bg"><div class="progress-fill" style="width: 0%;"></div></div>
                     <button class="btn-action">Iniciar <i class="fas fa-chevron-right"></i></button>
@@ -156,48 +127,24 @@
         </div>
     </div>
 
-    <!-- VISTA 2: DETALLE DEL CURSO (Economía) -->
+    <!-- VISTA 2: DETALLE DEL CURSO (Dinámico) -->
     <div id="view-detail" class="view-container sub-view">
-        <div class="header-title">
+        <div class="header-title" style="font-size: 20px;">
             <i class="fas fa-chevron-left back-btn" onclick="showView('view-list')"></i>
-            Educación Financiera Básica
+            <span id="detail-title">Nombre del curso</span>
         </div>
         
-        <div class="hero-img" style="background: var(--c-green-mint);">
-            📊
-        </div>
-        <p style="color: var(--text-muted); font-weight: 700; font-size: 15px;">Aprende a organizar tus finanzas personales y las de tu negocio, controlar tus costos y entender el entorno económico para hacer crecer tus ganancias.</p>
+        <div id="detail-hero" class="hero-img"></div>
+        <p id="detail-desc" style="color: var(--text-muted); font-weight: 700; font-size: 15px; margin-bottom: 20px;"></p>
         
         <div class="class-list">
             <h4 style="color: var(--text-dark); margin-bottom: 10px;">Contenido del curso:</h4>
-            <div class="class-item" onclick="openVideo()">
-                <i class="fas fa-play play-icon"></i>
-                <span class="class-title">Clase 1: Introducción a la Economía</span>
-                <span class="class-duration">5 min</span>
-            </div>
-            <div class="class-item" onclick="openVideo()">
-                <i class="fas fa-play play-icon"></i>
-                <span class="class-title">Clase 2: Presupuesto y Ahorro</span>
-                <span class="class-duration">7 min</span>
-            </div>
-            <div class="class-item" onclick="openVideo()">
-                <i class="fas fa-play play-icon"></i>
-                <span class="class-title">Clase 3: Separar dinero personal y negocio</span>
-                <span class="class-duration">8 min</span>
-            </div>
-            <div class="class-item" onclick="openVideo()">
-                <i class="fas fa-play play-icon"></i>
-                <span class="class-title">Clase 4: El Crédito y las Tasas de Interés</span>
-                <span class="class-duration">10 min</span>
-            </div>
-            <div class="class-item" onclick="openVideo()">
-                <i class="fas fa-play play-icon"></i>
-                <span class="class-title">Clase 5: Fondos de Emergencia</span>
-                <span class="class-duration">10 min</span>
+            <div id="classes-container">
+                <!-- Se llena con JS -->
             </div>
         </div>
 
-        <button class="fixed-bottom-btn" onclick="openVideo()">Comenzar curso</button>
+        <button class="fixed-bottom-btn" onclick="openVideo()">Comenzar clase</button>
     </div>
 
     <!-- VISTA 3: REPRODUCTOR DE CLASE -->
@@ -212,98 +159,199 @@
             <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
 
-        <h2 style="font-size: 22px; font-weight: 900; color: var(--text-dark); margin-bottom: 16px;">Introducción a la Economía</h2>
+        <h2 id="video-title" style="font-size: 22px; font-weight: 900; color: var(--text-dark); margin-bottom: 16px;">Título de Clase</h2>
         
         <div class="video-player">
-            <!-- Imagen simulando el video -->
             <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Profesora">
-            <i class="fas fa-play-circle" onclick="finishClass()"></i>
+            <i class="fas fa-play-circle" onclick="openQuiz()"></i>
         </div>
 
         <div class="learning-points">
             <h4>¿Qué aprenderás?</h4>
             <ul>
-                <li><i class="fas fa-check-circle"></i> Qué es la economía básica y cómo impacta tu día a día.</li>
-                <li><i class="fas fa-check-circle"></i> La diferencia vital entre ingresos brutos y rentabilidad real.</li>
+                <li><i class="fas fa-check-circle"></i> Conceptos clave para mejorar tu gestión.</li>
+                <li><i class="fas fa-check-circle"></i> Aplicación directa en tu negocio.</li>
             </ul>
         </div>
 
-        <div class="mascot-box">
-            <div class="mascot-img">💧</div>
-            <div class="speech-bubble">
-                ¡Toma nota! Estos consejos te ayudarán a que tu dinero rinda mucho más a fin de mes.
-            </div>
-        </div>
-
         <div style="display: flex; gap: 10px; margin-bottom: 60px;">
-            <button class="fixed-bottom-btn" style="position: relative; flex: 1; background: white; color: var(--primary); border: 2px solid var(--primary); left: 0; transform: none; bottom: 0; box-shadow: none;" onclick="showView('view-detail')">< Anterior</button>
-            <button class="fixed-bottom-btn" style="position: relative; flex: 1; left: 0; transform: none; bottom: 0; box-shadow: none;" onclick="finishClass()">Siguiente ></button>
+            <button class="fixed-bottom-btn" style="position: relative; flex: 1; background: white; color: var(--primary); border: 2px solid var(--primary); left: 0; transform: none; bottom: 0; box-shadow: none;" onclick="showView('view-detail')">< Volver</button>
+            <button class="fixed-bottom-btn" style="position: relative; flex: 1; left: 0; transform: none; bottom: 0; box-shadow: none;" onclick="openQuiz()">Siguiente ></button>
         </div>
     </div>
 
-    <!-- VISTA 4: FELICITACIONES -->
+    <!-- VISTA 4: CUESTIONARIO (QUIZ) -->
+    <div id="view-quiz" class="view-container sub-view">
+        <div class="header-title" style="justify-content: space-between; font-size: 18px;">
+            <i class="fas fa-chevron-left back-btn" onclick="showView('view-video')"></i>
+            Cuestionario
+            <i class="fas fa-times back-btn" onclick="showView('view-list')"></i>
+        </div>
+        
+        <div class="mascot-box">
+            <div class="mascot-img">🤔💧</div>
+            <div class="speech-bubble">¡Demuestra lo que aprendiste! Responde la siguiente pregunta para avanzar:</div>
+        </div>
+
+        <div class="quiz-question" id="quiz-q">¿Pregunta?</div>
+        
+        <div id="quiz-options">
+            <!-- Opciones generadas por JS -->
+        </div>
+
+        <button id="btn-quiz-next" class="fixed-bottom-btn" disabled onclick="finishClass()">Terminar Clase</button>
+    </div>
+
+    <!-- VISTA 5: FELICITACIONES -->
     <div id="view-success" class="view-container sub-view success-screen">
         <div class="mascot-img">🎓💧</div>
         
         <div class="speech-bubble" style="border-radius: 20px; text-align: center; padding: 24px; margin-bottom: 40px; font-size: 18px;">
             ¡Excelente trabajo, <span id="nombre-user">Dulce</span>! <br><br>
-            Ahora ya sabes los principios básicos de la economía y cómo organizar tu negocio. ¿Quieres seguir aprendiendo?
+            Has completado la lección con éxito.
         </div>
 
         <button class="fixed-bottom-btn" style="position: relative; left: 0; transform: none; bottom: 0; margin-bottom: 12px; width: 100%;" onclick="showView('view-list')"><i class="fas fa-book-open"></i> Ver más cursos</button>
-        
         <a href="index.html" class="fixed-bottom-btn" style="position: relative; left: 0; transform: none; bottom: 0; background: transparent; color: var(--text-muted); box-shadow: none; width: 100%; border: 2px solid var(--border-light);"><i class="fas fa-home"></i> Volver al inicio</a>
     </div>
 
-    <!-- Menú Inferior (Oculto dinámicamente en las clases) -->
+    <!-- Menú Inferior -->
     <div class="bottom-nav" id="main-nav">
         <a href="index.html" class="nav-btn"><i class="fas fa-home"></i><span>Inicio</span></a>
         <a href="capacitacion.html" class="nav-btn active"><i class="fas fa-graduation-cap"></i><span>Aprende</span></a>
         <a href="misfinanzas.html" class="nav-btn"><i class="fas fa-chart-bar"></i><span>Reportes</span></a>
         <a href="configuracion.html" class="nav-btn"><i class="fas fa-user"></i><span>Perfil</span></a>
     </div>
-
 </div>
 
 <script>
-    // Recuperar el nombre del usuario para el mensaje final
+    // BASE DE DATOS DE CURSOS
+    const dbCursos = {
+        'financiera': {
+            titulo: "Educación Financiera Básica", icon: "fa-wallet", color: "#047857", bg: "var(--c-green-light)", iconEmoji: "📊",
+            desc: "Aprende a organizar tus finanzas personales y las de tu negocio, controlar tus costos y entender el entorno económico.",
+            clases: ["Introducción a la Economía", "Presupuesto y Ahorro", "Separar el dinero", "El Crédito"],
+            pregunta: "¿Por qué es importante separar el dinero de tu negocio del dinero personal?",
+            opciones: [
+                { texto: "Para pagar más impuestos.", correcto: false },
+                { texto: "Para saber si el negocio realmente está dando ganancias.", correcto: true },
+                { texto: "No es importante, todo va al mismo bolsillo.", correcto: false }
+            ]
+        },
+        'gestion': {
+            titulo: "Gestión de tu Negocio", icon: "fa-store", color: "#D97706", bg: "var(--c-orange)", iconEmoji: "🏪",
+            desc: "Organiza tu negocio, mejora tu planificación diaria y controla tu inventario paso a paso.",
+            clases: ["Conoce tu negocio", "Organiza tus costos", "Controla tus ingresos", "Planifica tus ventas"],
+            pregunta: "¿Cuál es el primer paso para organizar tus costos?",
+            opciones: [
+                { texto: "Registrar todo lo que gastas al día.", correcto: true },
+                { texto: "Comprar más mercadería.", correcto: false },
+                { texto: "Pedir un préstamo al banco.", correcto: false }
+            ]
+        },
+        'economia': {
+            titulo: "Economía para Emprendedores", icon: "fa-chart-line", color: "#1D4ED8", bg: "var(--c-blue)", iconEmoji: "📈",
+            desc: "Domina conceptos de rentabilidad, punto de equilibrio, inflación y fijación de precios.",
+            clases: ["¿Qué es la rentabilidad?", "Fijación de precios", "Punto de equilibrio", "La inflación en las ventas"],
+            pregunta: "¿Qué significa el 'Punto de Equilibrio'?",
+            opciones: [
+                { texto: "Cuando ganas mucho dinero.", correcto: false },
+                { texto: "El momento en que tus ventas cubren exactamente todos tus costos (no pierdes ni ganas).", correcto: true },
+                { texto: "Cuando logras pagar tus deudas.", correcto: false }
+            ]
+        }
+    };
+
+    let cursoActual = null;
+
     document.addEventListener("DOMContentLoaded", () => {
         const nombreGuardado = localStorage.getItem('yaku_nombre');
-        if (nombreGuardado) {
-            document.getElementById('nombre-user').innerText = nombreGuardado;
-        }
+        if (nombreGuardado) document.getElementById('nombre-user').innerText = nombreGuardado;
     });
 
-    // Función para navegar entre pantallas dentro del mismo archivo
     function showView(viewId) {
-        // Ocultar todas las vistas
-        const views = document.querySelectorAll('.view-container');
-        views.forEach(view => {
+        document.querySelectorAll('.view-container').forEach(view => {
             view.classList.remove('active-view');
             view.style.display = 'none';
         });
-        
-        // Mostrar la vista solicitada
         const activeView = document.getElementById(viewId);
         activeView.classList.add('active-view');
         activeView.style.display = 'block';
         window.scrollTo(0, 0);
 
-        // Ocultar el menú inferior si no estamos en la lista de cursos
         const nav = document.getElementById('main-nav');
-        if(viewId === 'view-list') {
-            nav.style.display = 'flex';
-        } else {
-            nav.style.display = 'none';
-        }
+        nav.style.display = (viewId === 'view-list') ? 'flex' : 'none';
     }
 
-    function openCourse() {
+    function openCourse(id) {
+        cursoActual = dbCursos[id];
+        
+        // Llenar datos de la pantalla de detalle
+        document.getElementById('detail-title').innerText = cursoActual.titulo;
+        document.getElementById('detail-desc').innerText = cursoActual.desc;
+        
+        const hero = document.getElementById('detail-hero');
+        hero.style.background = cursoActual.bg;
+        hero.style.color = cursoActual.color;
+        hero.innerText = cursoActual.iconEmoji;
+
+        // Llenar lista de clases dinámicamente
+        const container = document.getElementById('classes-container');
+        container.innerHTML = '';
+        cursoActual.clases.forEach((clase, index) => {
+            container.innerHTML += `
+                <div class="class-item" onclick="openVideo()">
+                    <i class="fas fa-play play-icon"></i>
+                    <span class="class-title">Clase ${index + 1}: ${clase}</span>
+                    <span class="class-duration">5 min</span>
+                </div>
+            `;
+        });
+        
+        // Preparar título del video
+        document.getElementById('video-title').innerText = cursoActual.clases[0];
+
         showView('view-detail');
     }
 
     function openVideo() {
         showView('view-video');
+    }
+
+    function openQuiz() {
+        // Cargar pregunta y opciones
+        document.getElementById('quiz-q').innerText = cursoActual.pregunta;
+        const optionsContainer = document.getElementById('quiz-options');
+        optionsContainer.innerHTML = '';
+        
+        cursoActual.opciones.forEach((opcion, index) => {
+            optionsContainer.innerHTML += `
+                <button class="quiz-option" onclick="checkAnswer(this, ${opcion.correcto})">${opcion.texto}</button>
+            `;
+        });
+        
+        // Deshabilitar botón de siguiente hasta que responda bien
+        const btnNext = document.getElementById('btn-quiz-next');
+        btnNext.disabled = true;
+        btnNext.style.background = "var(--text-muted)";
+
+        showView('view-quiz');
+    }
+
+    function checkAnswer(boton, esCorrecto) {
+        // Quitar estilos a los demás botones
+        document.querySelectorAll('.quiz-option').forEach(btn => {
+            btn.classList.remove('correct', 'wrong');
+        });
+
+        if(esCorrecto) {
+            boton.classList.add('correct');
+            const btnNext = document.getElementById('btn-quiz-next');
+            btnNext.disabled = false;
+            btnNext.style.background = "var(--primary)";
+        } else {
+            boton.classList.add('wrong');
+        }
     }
 
     function finishClass() {
